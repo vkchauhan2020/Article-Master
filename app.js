@@ -87,6 +87,13 @@ async function startScanner() {
       await startZxingScanner();
       return;
     }
+async function startScanner() {
+  if (!('BarcodeDetector' in window)) {
+    showToast('BarcodeDetector is unavailable in this browser. Use manual entry.');
+    return;
+  }
+
+  try {
     const supported = await BarcodeDetector.getSupportedFormats();
     const formats = SCAN_FORMATS.filter((format) => supported.includes(format));
     if (formats.length === 0) throw new Error('No supported barcode formats found.');
@@ -95,6 +102,9 @@ async function startScanner() {
     els.video.srcObject = stream;
     await els.video.play();
     setScannerRunning('Scanning');
+    els.status.textContent = 'Scanning';
+    els.start.disabled = true;
+    els.stop.disabled = false;
     scanTimer = window.setInterval(scanFrame, 450);
   } catch (error) {
     showToast(`Unable to start camera: ${error.message}`);

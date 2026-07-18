@@ -2,6 +2,10 @@ name: Deploy static site to GitHub Pages
 
 on:
   push: {}
+  push:
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
