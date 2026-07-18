@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'article-master-records';
 const SCAN_FORMATS = ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'code_93', 'codabar', 'itf', 'qr_code', 'data_matrix'];
+const ZXING_CDN = 'https://unpkg.com/@zxing/browser@0.1.5/umd/index.min.js';
 
 const els = {
   video: document.querySelector('#scanner-video'),
@@ -22,6 +23,7 @@ const els = {
 let stream;
 let detector;
 let scanTimer;
+let zxingControls;
 let activeBarcode = '';
 let records = loadRecords();
 
@@ -50,6 +52,41 @@ function setActiveBarcode(value) {
   if (activeBarcode) showToast(`Barcode captured: ${activeBarcode}`);
 }
 
+function setScannerRunning(message) {
+  els.status.textContent = message;
+  els.start.disabled = true;
+  els.stop.disabled = false;
+}
+
+async function loadZxing() {
+  if (window.ZXingBrowser?.BrowserMultiFormatReader) return window.ZXingBrowser;
+
+  await new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = ZXING_CDN;
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Unable to load barcode scanner fallback. Check your internet connection.'));
+    document.head.append(script);
+  });
+
+  if (!window.ZXingBrowser?.BrowserMultiFormatReader) {
+    throw new Error('Barcode scanner fallback did not initialize.');
+  }
+
+  return window.ZXingBrowser;
+}
+
+async function startScanner() {
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      throw new Error('Camera access is unavailable. Use manual entry or open the site over HTTPS.');
+    }
+
+    if (!('BarcodeDetector' in window)) {
+      await startZxingScanner();
+      return;
+    }
 async function startScanner() {
   if (!('BarcodeDetector' in window)) {
     showToast('BarcodeDetector is unavailable in this browser. Use manual entry.');
@@ -64,6 +101,7 @@ async function startScanner() {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
     els.video.srcObject = stream;
     await els.video.play();
+    setScannerRunning('Scanning');
     els.status.textContent = 'Scanning';
     els.start.disabled = true;
     els.stop.disabled = false;
@@ -72,6 +110,18 @@ async function startScanner() {
     showToast(`Unable to start camera: ${error.message}`);
     stopScanner();
   }
+}
+
+async function startZxingScanner() {
+  const zxing = await loadZxing();
+  const reader = new zxing.BrowserMultiFormatReader();
+  setScannerRunning('Scanning');
+
+  zxingControls = await reader.decodeFromVideoDevice(undefined, els.video, (result) => {
+    if (!result) return;
+    setActiveBarcode(result.getText());
+    stopScanner();
+  });
 }
 
 async function scanFrame() {
@@ -89,6 +139,8 @@ async function scanFrame() {
 
 function stopScanner() {
   window.clearInterval(scanTimer);
+  zxingControls?.stop();
+  zxingControls = undefined;
   stream?.getTracks().forEach((track) => track.stop());
   stream = undefined;
   els.video.srcObject = null;
