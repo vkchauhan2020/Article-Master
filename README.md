@@ -7,12 +7,12 @@ A static, mobile-friendly web app for scanning product barcodes, collecting cart
 After this repository is pushed to GitHub and GitHub Pages is enabled, the live app will be available at:
 
 ```text
-https://vkchauhan2020.github.io/Article-Master/
+https://<your-github-username>.github.io/Article-Master/
 ```
 
-This is the final public URL once the repo is pushed and GitHub Pages finishes deploying.
+Replace `<your-github-username>` with the GitHub account or organization that owns the public repository.
 
-> This working copy does not currently have a GitHub remote configured, so the exact public URL cannot be generated from the local repo alone. Add a remote with `git remote add origin https://github.com/vkchauhan2020/Article-Master.git`, push the branch, and enable Pages or run the included Pages workflow.
+> This working copy does not currently have a GitHub remote configured, so the exact public URL cannot be generated from the local repo alone. Add a remote with `git remote add origin https://github.com/<your-github-username>/Article-Master.git`, push the branch, and enable Pages or run the included Pages workflow.
 
 ## Files included in this repository
 
@@ -34,13 +34,13 @@ This is the final public URL once the repo is pushed and GitHub Pages finishes d
 1. Push this repository to GitHub:
 
    ```bash
-   git remote add origin https://github.com/vkchauhan2020/Article-Master.git
+   git remote add origin https://github.com/<your-github-username>/Article-Master.git
    git push -u origin work
    ```
 
 2. Open **Settings > Pages** in the GitHub repository.
 3. Under **Build and deployment**, select **GitHub Actions** as the source.
-4. Open the **Actions** tab and run **Deploy static site to GitHub Pages** manually, or push any branch containing this workflow to deploy automatically.
-5. Open the generated Pages URL, which should match `https://vkchauhan2020.github.io/Article-Master/`.
+4. Open the **Actions** tab and run **Deploy static site to GitHub Pages** manually, or merge/push this branch to `main` or `master` to deploy automatically.
+5. Open the generated Pages URL, which should match `https://<your-github-username>.github.io/Article-Master/`.
 
 > Camera APIs require HTTPS or localhost. GitHub Pages serves over HTTPS, so camera access works on supported mobile browsers.
