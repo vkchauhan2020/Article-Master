@@ -1,0 +1,44 @@
+:root {
+  color-scheme: light dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: linear-gradient(135deg, #e0f2fe, #f8fafc 45%, #dbeafe); }
+button, input { font: inherit; }
+button { border: 0; border-radius: 999px; padding: 0.85rem 1.1rem; font-weight: 700; cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.app-shell { width: min(1120px, 100%); margin: 0 auto; padding: 1rem; display: grid; gap: 1rem; }
+.hero, .scanner-card, .entry-card, .data-card { background: rgb(255 255 255 / 0.9); border: 1px solid rgb(148 163 184 / 0.25); border-radius: 1.35rem; box-shadow: 0 18px 50px rgb(15 23 42 / 0.08); padding: 1.25rem; }
+.hero { background: #0f172a; color: white; }
+.eyebrow { color: #67e8f9; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+h1, h2, p { margin-top: 0; }
+.hero-copy, .section-heading p { color: #64748b; }
+.hero .hero-copy { color: #cbd5e1; }
+.section-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+.status-pill, .barcode-chip { background: #e0f2fe; color: #075985; border-radius: 999px; padding: 0.5rem 0.75rem; }
+.scanner-frame { position: relative; overflow: hidden; border-radius: 1rem; min-height: 240px; background: #020617; display: grid; place-items: center; }
+video { width: 100%; max-height: 50vh; display: block; }
+.scan-reticle { position: absolute; width: min(72%, 420px); height: 34%; border: 3px solid #22d3ee; border-radius: 0.75rem; box-shadow: 0 0 0 999px rgb(2 6 23 / 0.35); }
+.button-row, .inline-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+.compact { margin-top: 0; }
+.primary { background: #0891b2; color: white; }
+.secondary { background: #e2e8f0; color: #0f172a; }
+.danger { background: #fee2e2; color: #991b1b; }
+.manual-entry { margin-top: 1rem; }
+.inline-form label, label span { display: block; font-weight: 700; margin-bottom: 0.35rem; }
+input { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.75rem; padding: 0.8rem; background: white; color: #0f172a; }
+.inline-controls input { flex: 1 1 180px; }
+.field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 760px; }
+th, td { padding: 0.8rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
+th { color: #475569; font-size: 0.85rem; text-transform: uppercase; }
+.empty-state { text-align: center; color: #64748b; }
+#toast { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); background: #0f172a; color: white; padding: 0.8rem 1rem; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; max-width: calc(100% - 2rem); }
+#toast.show { opacity: 1; }
+@media (min-width: 850px) { .app-shell { grid-template-columns: 1fr 1fr; padding: 2rem; } .hero, .data-card { grid-column: 1 / -1; } }
+@media (prefers-color-scheme: dark) { :root { background: #020617; color: #e2e8f0; } body { background: #020617; } .scanner-card, .entry-card, .data-card { background: #0f172a; } input, .secondary { background: #1e293b; color: #e2e8f0; border-color: #334155; } th, .section-heading p { color: #94a3b8; } td, th { border-color: #1e293b; } }
